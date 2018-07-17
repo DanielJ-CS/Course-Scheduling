@@ -1,0 +1,1532 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/controller/DatasetController.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">src/controller/</a> DatasetController.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">95.56% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>280/293</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">81.08% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>150/185</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">94.44% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>68/72</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">95.56% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>280/293</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481
+482
+483
+484
+485
+486
+487
+488
+489
+490</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">5947×</span>
+<span class="cline-any cline-yes">5947×</span>
+<span class="cline-any cline-yes">5944×</span>
+<span class="cline-any cline-yes">5944×</span>
+<span class="cline-any cline-yes">5944×</span>
+<span class="cline-any cline-yes">5944×</span>
+<span class="cline-any cline-yes">5944×</span>
+<span class="cline-any cline-yes">44430×</span>
+<span class="cline-any cline-yes">44430×</span>
+<span class="cline-any cline-yes">44430×</span>
+<span class="cline-any cline-yes">444300×</span>
+<span class="cline-any cline-yes">444300×</span>
+<span class="cline-any cline-yes">444300×</span>
+<span class="cline-any cline-yes">266580×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">177720×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">44430×</span>
+<span class="cline-any cline-yes">16895×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">44430×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5944×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5944×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1892×</span>
+<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1892×</span>
+<span class="cline-any cline-yes">296×</span>
+<span class="cline-any cline-yes">296×</span>
+<span class="cline-any cline-yes">378×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1892×</span>
+<span class="cline-any cline-yes">296×</span>
+<span class="cline-any cline-yes">296×</span>
+<span class="cline-any cline-yes">378×</span>
+<span class="cline-any cline-yes">295×</span>
+<span class="cline-any cline-yes">295×</span>
+<span class="cline-any cline-yes">299×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1892×</span>
+<span class="cline-any cline-yes">958×</span>
+<span class="cline-any cline-yes">1891×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">7456×</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7456×</span>
+<span class="cline-any cline-yes">3784×</span>
+<span class="cline-any cline-yes">7452×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">5715×</span>
+<span class="cline-any cline-yes">887×</span>
+<span class="cline-any cline-yes">887×</span>
+<span class="cline-any cline-yes">1119×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5715×</span>
+<span class="cline-any cline-yes">177×</span>
+<span class="cline-any cline-yes">177×</span>
+<span class="cline-any cline-yes">174×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5715×</span>
+<span class="cline-any cline-yes">80×</span>
+<span class="cline-any cline-yes">80×</span>
+<span class="cline-any cline-yes">80×</span>
+<span class="cline-any cline-yes">80×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5715×</span>
+<span class="cline-any cline-yes">80×</span>
+<span class="cline-any cline-yes">80×</span>
+<span class="cline-any cline-yes">80×</span>
+<span class="cline-any cline-yes">80×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5715×</span>
+<span class="cline-any cline-yes">80×</span>
+<span class="cline-any cline-yes">80×</span>
+<span class="cline-any cline-yes">80×</span>
+<span class="cline-any cline-yes">80×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5715×</span>
+<span class="cline-any cline-yes">887×</span>
+<span class="cline-any cline-yes">887×</span>
+<span class="cline-any cline-yes">1119×</span>
+<span class="cline-any cline-yes">884×</span>
+<span class="cline-any cline-yes">884×</span>
+<span class="cline-any cline-yes">896×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5715×</span>
+<span class="cline-any cline-yes">2879×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">64×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">"use strict";
+var Util_1 = require("../Util");
+var JSZip = require('jszip');
+var fs = require('fs');
+var parse5 = require('parse5');
+var DatasetController = (function () {
+    function DatasetController() {
+        this.isDatasetsLoaded = false;
+        this.datasets = {};
+        Util_1.default.trace('DatasetController::init()');
+    }
+    DatasetController.getKeyType = function (key) {
+        if (!DatasetController.keyTypeMap) {
+            DatasetController.keyTypeMap = {};
+            for (var id in DatasetController.datasetSchema) {
+                for (var key_1 in DatasetController.datasetSchema[id]) {
+                    DatasetController.keyTypeMap[key_1] = DatasetController.datasetSchema[id][key_1]['type'];
+                }
+            }
+        }
+        return DatasetController.keyTypeMap[key];
+    };
+    DatasetController.prototype.getDatasets = function () {
+        var that = this;
+        return new Promise(function (fulfill, reject) {
+            try {
+                if (that.isDatasetsLoaded === true) {
+                    Util_1.default.trace('DatasetController::getDatasets(..) - dataset already loaded in memory');
+                    fulfill(that.datasets);
+                }
+                else {
+                    var datasetPromises_1 = [];
+                    var directory_1 = 'data/';
+                    Util_1.default.trace('DatasetController::getDatasets(..) - reading files in directory: ' + directory_1);
+                    fs.mkdir('data', function (err) {
+                        <span class="missing-if-branch" title="if path not taken" >I</span>if (err &amp;&amp; err.code != 'EEXIST') {
+                        }
+                        fs.readdir(directory_1, function (err, files) {
+                            <span class="missing-if-branch" title="if path not taken" >I</span>if (err) {
+                            }
+                            Util_1.default.trace('DatasetController::getDatasets(..) - got list of files: ' + JSON.stringify(files));
+                            files.forEach(function (file) {
+                                if (file.length &gt;= 5 &amp;&amp; file.substring(file.length - 5, file.length) === ".json") {
+                                    datasetPromises_1.push(new Promise(function (fulfill, reject) {
+                                        fs.readFile(directory_1 + file, function (err, data) {
+                                            <span class="missing-if-branch" title="if path not taken" >I</span>if (err) {
+                                            }
+                                            var datasetData = JSON.parse(data);
+                                            var filename = file.replace('.json', '');
+                                            that.datasets[filename] = datasetData;
+                                            fulfill(true);
+                                        });
+                                    }));
+                                }
+                            });
+                            Promise.all(datasetPromises_1).then(function (results) {
+                                Util_1.default.trace('DatasetController::getDatasets(..) - successfully loaded ' + datasetPromises_1.length + ' datasets');
+                                that.isDatasetsLoaded = true;
+                                fulfill(that.datasets);
+                            });
+                        });
+                    });
+                }
+            }
+            catch (err) {
+<span class="cstat-no" title="statement not covered" >                Util_1.default.trace('DatasetController::getDatasets() - ERROR: ' + err);</span>
+<span class="cstat-no" title="statement not covered" >                reject(err);</span>
+            }
+        });
+    };
+    DatasetController.prototype.processCoursesDatasetFromZip = function (id, zip) {
+        return new Promise(function (fulfill, reject) {
+            var filePromises = [];
+            var numFiles = 0;
+            var processedDataset = [];
+            zip.forEach(function (relativePath, file) {
+                var toks = file.name.split("/");
+                if (toks.length &gt; 1 &amp;&amp; toks[0] === id &amp;&amp; !file.dir) {
+                    filePromises.push(new Promise(function (fulfill, reject) {
+                        file.async("string").then(function (content) {
+                            var obj = JSON.parse(content);
+                            <span class="missing-if-branch" title="else path not taken" >E</span>if (obj.result instanceof Array) {
+                                for (var i = 0; i &lt; obj.result.length; i++) {
+                                    var entry = obj.result[i];
+                                    var parsedEntry = {};
+                                    for (var col in DatasetController.datasetSchema[id]) {
+                                        var colType = DatasetController.datasetSchema[id][col]['type'];
+                                        var rawColName = DatasetController.datasetSchema[id][col]['raw_col'];
+                                        if (colType === 'number') {
+                                            parsedEntry[col] = parseFloat(entry[rawColName]);
+                                        }
+                                        else {
+                                            parsedEntry[col] = entry[rawColName];
+                                        }
+                                    }
+                                    if (entry['Section'] === 'overall') {
+                                        parsedEntry['courses_year'] = 1900;
+                                    }
+                                    processedDataset.push(parsedEntry);
+                                }
+                                numFiles++;
+                            }
+                            fulfill(true);
+                        }).catch(<span class="fstat-no" title="function not covered" >function (err) {</span>
+<span class="cstat-no" title="statement not covered" >                            Util_1.default.info("DatasetController::processCoursesFromZip(..) - error reading contents of file " + file.name + ": " + err);</span>
+<span class="cstat-no" title="statement not covered" >                            reject(err);</span>
+                        });
+                    }));
+                }
+            });
+            Promise.all(filePromises).then(function (values) {
+                Util_1.default.trace('DatasetController::processCoursesFromZip(..) - processed ' + processedDataset.length + ' entries from ' + numFiles + ' valid flies');
+                if (numFiles === 0) {
+                    reject(new Error("No valid files found in zip"));
+                }
+                else {
+                    fulfill(processedDataset);
+                }
+            }).catch(<span class="fstat-no" title="function not covered" >function (err) {</span>
+<span class="cstat-no" title="statement not covered" >                reject(err);</span>
+            });
+        });
+    };
+    DatasetController.prototype.processRoomsDatasetFromZip = function (id, zip) {
+        return new Promise(function (fulfill, reject) {
+            var shortNames = [];
+            var fullNames = [];
+            var buildingAddress = [];
+            var latlonAddress = [];
+            var fileName = [];
+            var roomNumber = [];
+            var roomSeats = [];
+            var roomFurniture = [];
+            var roomType = [];
+            var roomInfo = [];
+            var roomFullName = [];
+            zip.file('index.htm').async('string').then(function (content) {
+                var document = parse5.parse(content);
+                function parseNodes(node, array) {
+                    if (node.nodeName === 'td') {
+                        <span class="missing-if-branch" title="else path not taken" >E</span>if (node.attrs) {
+                            node.attrs.forEach(function (att) {
+                                if (att.name === 'class' &amp;&amp; att.value === 'views-field views-field-field-building-code') {
+                                    <span class="missing-if-branch" title="else path not taken" >E</span>if (node.childNodes) {
+                                        node.childNodes.forEach(function (childnode) {
+                                            <span class="missing-if-branch" title="else path not taken" >E</span>if (childnode.nodeName === '#text') {
+                                                shortNames.push(childnode.value.trim());
+                                            }
+                                        });
+                                    }
+                                }
+                                if (att.name === 'class' &amp;&amp; att.value === 'views-field views-field-field-building-address') {
+                                    <span class="missing-if-branch" title="else path not taken" >E</span>if (node.childNodes) {
+                                        node.childNodes.forEach(function (childnode) {
+                                            <span class="missing-if-branch" title="else path not taken" >E</span>if (childnode.nodeName === '#text') {
+                                                buildingAddress.push(childnode.value.trim());
+                                                var c = childnode.value.trim();
+                                                latlonAddress.push(encodeURI(c));
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    }
+                    if (node.nodeName === 'a') {
+                        <span class="missing-if-branch" title="else path not taken" >E</span>if (node.attrs) {
+                            node.attrs.forEach(function (att) {
+                                if (att.name === 'title' &amp;&amp; att.value === 'Building Details and Map') {
+                                    <span class="missing-if-branch" title="else path not taken" >E</span>if (node.childNodes) {
+                                        node.childNodes.forEach(function (childnode) {
+                                            if (childnode.nodeName === '#text') {
+                                                fullNames.push(childnode.value.trim());
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    }
+                    if (node.nodeName &amp;&amp; node.nodeName === 'a') {
+                        <span class="missing-if-branch" title="else path not taken" >E</span>if (node.attrs) {
+                            node.attrs.forEach(function (att) {
+                                if (att.name === 'href') {
+                                    <span class="missing-if-branch" title="else path not taken" >E</span>if (node.childNodes) {
+                                        node.childNodes.forEach(function (child) {
+                                            if (child.value === 'More info') {
+                                                child.parentNode.attrs.forEach(function (att) {
+                                                    var file = att.value.replace('.', '');
+                                                    var file2 = file.substring(1, file.length);
+                                                    array.push(file2);
+                                                });
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    }
+                    if (node.childNodes) {
+                        node.childNodes.forEach(function (child) {
+                            parseNodes(child, array);
+                        });
+                    }
+                }
+                parseNodes(document, fileName);
+                var filePromises = [];
+                fileName.forEach(function (file) {
+                    <span class="missing-if-branch" title="if path not taken" >I</span>if (!zip.file(file))
+<span class="cstat-no" title="statement not covered" >                        return;</span>
+                    filePromises.push(new Promise(function (fulfill, reject) {
+                        zip.file(file).async('string').then(function (content) {
+                            var document = parse5.parse(content);
+                            var hasRoom = false;
+                            function parseDatasetNodes(node) {
+                                if (node.nodeName &amp;&amp; node.nodeName === 'th') {
+                                    <span class="missing-if-branch" title="else path not taken" >E</span>if (node.attrs) {
+                                        node.attrs.forEach(function (att) {
+                                            if (att.name === 'class' &amp;&amp; att.value === 'views-field views-field-field-room-number') {
+                                                <span class="missing-if-branch" title="else path not taken" >E</span>if (node.childNodes) {
+                                                    node.childNodes.forEach(function (childnode) {
+                                                        <span class="missing-if-branch" title="else path not taken" >E</span>if (childnode.value.trim() === 'Room') {
+                                                            hasRoom = true;
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                                if (node.childNodes) {
+                                    node.childNodes.forEach(function (node) {
+                                        parseDatasetNodes(node);
+                                    });
+                                }
+                            }
+                            parseDatasetNodes(document);
+                            if (!hasRoom) {
+                                fulfill(true);
+                                return;
+                            }
+                            function getKeys(node) {
+                                if (node.nodeName &amp;&amp; node.nodeName === 'a') {
+                                    <span class="missing-if-branch" title="else path not taken" >E</span>if (node.attrs) {
+                                        node.attrs.forEach(function (att) {
+                                            if (att.name === 'title' &amp;&amp; att.value === 'Room Details') {
+                                                <span class="missing-if-branch" title="else path not taken" >E</span>if (node.childNodes) {
+                                                    node.childNodes.forEach(function (child) {
+                                                        roomNumber.push(child.value.trim());
+                                                    });
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                                if (node.nodeName &amp;&amp; node.nodeName === 'span') {
+                                    <span class="missing-if-branch" title="else path not taken" >E</span>if (node.attrs) {
+                                        node.attrs.forEach(function (att) {
+                                            if (att.name === 'class' &amp;&amp; att.value === 'field-content') {
+                                                <span class="missing-if-branch" title="else path not taken" >E</span>if (node.childNodes) {
+                                                    node.childNodes.forEach(function (child) {
+                                                        roomFullName.push(child.value);
+                                                    });
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                                if (node.nodeName &amp;&amp; node.nodeName === 'td') {
+                                    <span class="missing-if-branch" title="else path not taken" >E</span>if (node.attrs) {
+                                        node.attrs.forEach(function (att) {
+                                            <span class="missing-if-branch" title="else path not taken" >E</span>if (att.name === 'class') {
+                                                if (att.value === 'views-field views-field-field-room-capacity') {
+                                                    <span class="missing-if-branch" title="else path not taken" >E</span>if (node.childNodes) {
+                                                        node.childNodes.forEach(function (child) {
+                                                            roomSeats.push(child.value.trim());
+                                                        });
+                                                    }
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                                if (node.nodeName &amp;&amp; node.nodeName === 'td') {
+                                    <span class="missing-if-branch" title="else path not taken" >E</span>if (node.attrs) {
+                                        node.attrs.forEach(function (att) {
+                                            <span class="missing-if-branch" title="else path not taken" >E</span>if (att.name === 'class') {
+                                                if (att.value === 'views-field views-field-field-room-furniture') {
+                                                    <span class="missing-if-branch" title="else path not taken" >E</span>if (node.childNodes) {
+                                                        node.childNodes.forEach(function (child) {
+                                                            roomFurniture.push(child.value.trim());
+                                                        });
+                                                    }
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                                if (node.nodeName &amp;&amp; node.nodeName === 'td') {
+                                    <span class="missing-if-branch" title="else path not taken" >E</span>if (node.attrs) {
+                                        node.attrs.forEach(function (att) {
+                                            <span class="missing-if-branch" title="else path not taken" >E</span>if (att.name === 'class') {
+                                                if (att.value === 'views-field views-field-field-room-type') {
+                                                    <span class="missing-if-branch" title="else path not taken" >E</span>if (node.childNodes) {
+                                                        node.childNodes.forEach(function (child) {
+                                                            roomType.push(child.value.trim());
+                                                        });
+                                                    }
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                                if (node.nodeName &amp;&amp; node.nodeName === 'a') {
+                                    <span class="missing-if-branch" title="else path not taken" >E</span>if (node.attrs) {
+                                        node.attrs.forEach(function (att) {
+                                            if (att.name === 'href') {
+                                                <span class="missing-if-branch" title="else path not taken" >E</span>if (node.childNodes) {
+                                                    node.childNodes.forEach(function (child) {
+                                                        if (child.value === 'More info') {
+                                                            child.parentNode.attrs.forEach(function (att) {
+                                                                roomInfo.push(att.value.trim());
+                                                            });
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                                if (node.childNodes) {
+                                    node.childNodes.forEach(getKeys);
+                                }
+                            }
+                            getKeys(document);
+                            fulfill(true);
+                        });
+                    }));
+                });
+                Promise.all(filePromises).then(function (result) {
+                    var roomArray = [];
+                    var namesArrayValue;
+                    for (var i = 0; i &lt; roomNumber.length; i++) {
+                        for (var j = 0; j &lt; fullNames.length; j++) {
+                            if (fullNames[j] === roomFullName[i]) {
+                                namesArrayValue = j;
+                            }
+                        }
+                        var roomObject = {};
+                        roomObject['rooms_fullname'] = fullNames[namesArrayValue];
+                        roomObject['rooms_shortname'] = shortNames[namesArrayValue];
+                        roomObject['rooms_number'] = roomNumber[i];
+                        roomObject['rooms_name'] = shortNames[namesArrayValue] + " " + roomNumber[i];
+                        roomObject['rooms_address'] = buildingAddress[namesArrayValue];
+                        roomObject['rooms_seats'] = roomSeats[i];
+                        roomObject['rooms_type'] = roomType[i];
+                        roomObject['rooms_furniture'] = roomFurniture[i];
+                        roomObject['rooms_href'] = roomInfo[i];
+                        roomArray.push(roomObject);
+                    }
+                    console.log(roomArray);
+                    fulfill(roomArray);
+                });
+            });
+        });
+    };
+    DatasetController.prototype.process = function (id, data) {
+        Util_1.default.trace('DatasetController::process( ' + id + '... )');
+        var that = this;
+        return new Promise(function (fulfill, reject) {
+            try {
+                var myZip = new JSZip();
+                myZip.loadAsync(data, { base64: true }).then(function (zip) {
+                    Util_1.default.trace('DatasetController::process(..) - unzipped the file');
+                    var resPromise = null;
+                    if (id === 'courses') {
+                        resPromise = that.processCoursesDatasetFromZip(id, zip);
+                    }
+                    else <span class="missing-if-branch" title="else path not taken" >E</span>if (id === 'rooms') {
+                        resPromise = that.processRoomsDatasetFromZip(id, zip);
+                    }
+                    else {
+<span class="cstat-no" title="statement not covered" >                        reject(new Error("unknown dataset id " + id));</span>
+                    }
+                    resPromise.then(function (processedDataset) {
+                        that.getDatasets().then(function (datasets) {
+                            that.save(id, processedDataset).then(function (resCode) {
+                                fulfill(resCode);
+                            }).catch(<span class="fstat-no" title="function not covered" >function (err) {</span>
+<span class="cstat-no" title="statement not covered" >                                reject(err);</span>
+                            });
+                        }).catch(<span class="fstat-no" title="function not covered" >function (err) {</span>
+<span class="cstat-no" title="statement not covered" >                            reject(err);</span>
+                        });
+                    }).catch(function (err) {
+                        reject(err);
+                    });
+                }).catch(function (err) {
+                    Util_1.default.trace('DatasetController::process(..) - unzip ERROR: ' + err.message);
+                    reject(err);
+                });
+            }
+            catch (err) {
+<span class="cstat-no" title="statement not covered" >                Util_1.default.trace('DatasetController::process(..) - ERROR: ' + err);</span>
+<span class="cstat-no" title="statement not covered" >                reject(err);</span>
+            }
+        });
+    };
+    DatasetController.prototype.save = function (id, processedDataset) {
+        var that = this;
+        return new Promise(function (fulfill, reject) {
+            var resCode = 204;
+            if (that.datasets[id] !== undefined) {
+                resCode = 201;
+            }
+            that.datasets[id] = processedDataset;
+            Util_1.default.trace('DatasetController::save(..) - checking existence of data/');
+            fs.mkdir('data', function (err) {
+                <span class="missing-if-branch" title="if path not taken" >I</span>if (err &amp;&amp; err.code != 'EEXIST') {
+                }
+                var dstFileName = 'data/' + id + '.json';
+                Util_1.default.trace('DatasetController::save(..) - saving file to ' + dstFileName);
+                var ws = fs.createWriteStream(dstFileName);
+                ws.on('finish', function () {
+                    Util_1.default.trace('DatasetController::save(..) - finished saving file to ' + dstFileName);
+                    fulfill(resCode);
+                }).on('open', function (fd) {
+                    ws.write(JSON.stringify(processedDataset), 'utf8');
+                    ws.end();
+                });
+            });
+        });
+    };
+    DatasetController.prototype.deleteDataset = function (id) {
+        var that = this;
+        return new Promise(function (fulfill, reject) {
+            that.datasets[id] = undefined;
+            var filename = 'data/' + id + '.json';
+            Util_1.default.trace('DatasetController::deleteDataset(..) - deleting file ' + filename);
+            fs.unlink(filename, function (err) {
+                if (err) {
+                    <span class="missing-if-branch" title="if path not taken" >I</span>if (err.code != 'ENOENT') {
+<span class="cstat-no" title="statement not covered" >                        Util_1.default.trace('DatasetController::deleteDataset(..) - error deleting file: ' + err);</span>
+<span class="cstat-no" title="statement not covered" >                        reject(err);</span>
+                    }
+                    else {
+                        Util_1.default.trace('DatasetController::deleteDataset(..) - file to delete was not present');
+                        fulfill(404);
+                    }
+                }
+                else {
+                    Util_1.default.trace('DatasetController::deleteDataset(..) - file delete successful');
+                    fulfill(204);
+                }
+            });
+        });
+    };
+    DatasetController.datasetSchema = {
+        courses: {
+            courses_dept: { type: 'string', raw_col: 'Subject' },
+            courses_id: { type: 'string', raw_col: 'Course' },
+            courses_avg: { type: 'number', raw_col: 'Avg' },
+            courses_instructor: { type: 'string', raw_col: 'Professor' },
+            courses_title: { type: 'string', raw_col: 'Title' },
+            courses_pass: { type: 'number', raw_col: 'Pass' },
+            courses_fail: { type: 'number', raw_col: 'Fail' },
+            courses_audit: { type: 'number', raw_col: 'Audit' },
+            courses_uuid: { type: 'number', raw_col: 'id' },
+            courses_year: { type: 'number', raw_col: 'Year' }
+        },
+        rooms: {
+            rooms_fullName: { type: 'string' },
+            rooms_shortName: { type: 'string' },
+            rooms_number: { type: 'string' },
+            rooms_name: { type: 'string' },
+            rooms_address: { type: 'string' },
+            rooms_lat: { type: 'number' },
+            rooms_lon: { type: 'number' },
+            rooms_seats: { type: 'number' },
+            rooms_type: { type: 'string' },
+            rooms_furniture: { type: 'string' },
+            rooms_href: { type: 'string' }
+        }
+    };
+    DatasetController.keyTypeMap = undefined;
+    return DatasetController;
+}());
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = DatasetController;
+//# sourceMappingURL=DatasetController.js.map</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Nov 13 2016 15:34:37 GMT-0800 (PST)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>
